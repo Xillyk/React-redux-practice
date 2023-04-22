@@ -15,13 +15,10 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   return response.data;
 });
 
-export const addNewPost = createAsyncThunk(
-  "posts/addNewPost",
-  async (initialPost) => {
-    const response = await axios.post(POST_URL, initialPost);
-    return response.data;
-  }
-);
+export const addNewPost = createAsyncThunk("posts/addNewPost", async (initialPost) => {
+  const response = await axios.post(POST_URL, initialPost);
+  return response.data;
+});
 
 const postsSlice = createSlice({
   name: "posts",
@@ -60,6 +57,7 @@ const postsSlice = createSlice({
   },
   extraReducers(builder) {
     builder
+      // eslint-disable-next-line no-unused-vars
       .addCase(fetchPosts.pending, (state, action) => {
         state.status = "loading";
       })
@@ -105,6 +103,9 @@ const postsSlice = createSlice({
 export const selectAllPosts = (state) => state.posts.posts;
 export const getPostsStatus = (state) => state.posts.status;
 export const getPostsError = (state) => state.posts.error;
+
+export const selectPostById = (state, postId) =>
+  state.posts.posts.find((post) => post.id === postId);
 
 export const { postAdded, reactionAdded } = postsSlice.actions;
 
